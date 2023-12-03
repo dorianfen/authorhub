@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.dorian.authorhub.controller.dto.GetUserDto;
+import fr.dorian.authorhub.controller.dto.PostUserDto;
 import fr.dorian.authorhub.model.User;
 import fr.dorian.authorhub.service.UserService;
 
@@ -23,8 +25,10 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    public List<User> findAll() {
-        return service.findAll();
+    public List<GetUserDto> findAll() {
+        List<User> users = service.findAll();
+        List<GetUserDto> usersDto = users.stream().map(user -> new GetUserDto(user.getUsername(), user.getMail())).toList();
+        return usersDto;
     }
 
     @GetMapping("/{id}")
@@ -38,8 +42,12 @@ public class UserController {
     }
 
     @PostMapping
-    public User save(@RequestBody User user) {
-        return service.save(user);
+    public void save(@RequestBody PostUserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.username());
+        user.setMail(userDto.mail());
+        user.setPassword(userDto.password());
+        service.save(user);
     }
 
     @PutMapping
