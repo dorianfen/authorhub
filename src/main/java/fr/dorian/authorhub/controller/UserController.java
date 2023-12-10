@@ -16,6 +16,7 @@ import fr.dorian.authorhub.controller.dto.GetUserDto;
 import fr.dorian.authorhub.controller.dto.PostUserDto;
 import fr.dorian.authorhub.model.User;
 import fr.dorian.authorhub.service.UserService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping
-    public void save(@RequestBody PostUserDto userDto) {
+    public void save(@Valid @RequestBody PostUserDto userDto) {
         User user = new User();
         user.setUsername(userDto.username());
         user.setMail(userDto.mail());
@@ -51,8 +52,10 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@PathVariable Long id, @RequestBody User user) {
-        return service.update(user);
+    public void update(@PathVariable Long id, @RequestBody PostUserDto userDto) {
+        User user = new User();
+        //TODO: update user, make sure to check if current user is the same as the one in the request
+        service.update(user);
     }
 
     @DeleteMapping("/{id}")

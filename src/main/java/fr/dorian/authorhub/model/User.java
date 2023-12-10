@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class User {
     @NotNull
     private String username;
 
+    @Email
     @NotNull
     @Column(unique = true)
     private String mail;
