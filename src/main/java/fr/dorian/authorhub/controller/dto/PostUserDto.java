@@ -1,3 +1,5 @@
 package fr.dorian.authorhub.controller.dto;
 
-public record PostUserDto(String username, String password, String mail) {}
+import jakarta.validation.constraints.NotNull;
+
+public record PostUserDto(@NotNull String username, @NotNull String password, @NotNull String mail) {}

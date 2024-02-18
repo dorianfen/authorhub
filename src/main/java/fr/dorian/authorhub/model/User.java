@@ -29,5 +29,6 @@ public class User {
 
     @NotNull
     private String password;
+    
     private String role;
 }

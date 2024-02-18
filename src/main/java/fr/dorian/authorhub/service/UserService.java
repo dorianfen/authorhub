@@ -19,16 +19,12 @@ public class UserService {
         return repository.findAll();
     }
 
-    public Optional<User> getUserById(Long id) {
-        return repository.findById(id);
-    }
-
     public Optional<User> getUserByUsername(String username) {
         return repository.findByUsername(username);
     }
 
-    public User save(User user) {
-        return repository.save(user);
+    public void save(User user) {
+        repository.save(user);
     }
 
     public User update(User user) {

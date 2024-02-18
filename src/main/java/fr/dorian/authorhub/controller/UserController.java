@@ -2,6 +2,7 @@ package fr.dorian.authorhub.controller;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.qos.logback.core.model.Model;
 import fr.dorian.authorhub.controller.dto.GetUserDto;
 import fr.dorian.authorhub.controller.dto.PostUserDto;
 import fr.dorian.authorhub.model.User;
 import fr.dorian.authorhub.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,11 +33,6 @@ public class UserController {
         List<User> users = service.findAll();
         List<GetUserDto> usersDto = users.stream().map(user -> new GetUserDto(user.getUsername(), user.getMail())).toList();
         return usersDto;
-    }
-
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return service.getUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
     
     @GetMapping("/name/{username}")
@@ -54,7 +52,9 @@ public class UserController {
     @PutMapping
     public void update(@PathVariable Long id, @RequestBody PostUserDto userDto) {
         User user = new User();
-        //TODO: update user, make sure to check if current user is the same as the one in the request
+        //update user, can only be done by the user itself
+        
+
         service.update(user);
     }
 
