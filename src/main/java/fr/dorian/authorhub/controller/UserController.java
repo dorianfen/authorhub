@@ -2,7 +2,6 @@ package fr.dorian.authorhub.controller;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.qos.logback.core.model.Model;
 import fr.dorian.authorhub.controller.dto.GetUserDto;
 import fr.dorian.authorhub.controller.dto.PostUserDto;
 import fr.dorian.authorhub.model.User;
 import fr.dorian.authorhub.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,8 +33,10 @@ public class UserController {
     }
     
     @GetMapping("/name/{username}")
-    public User getUserByName(@PathVariable String username) {
-        return service.getUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+    public GetUserDto getByName(@PathVariable String username) {
+        User user = service.getUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        GetUserDto userDto = new GetUserDto(user.getUsername(), user.getMail());
+        return userDto;
     }
 
     @PostMapping
